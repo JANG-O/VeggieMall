@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Table(name = "orders")
 @Getter
@@ -21,14 +23,14 @@ public class Order {
     private Long id;
 
     // 양방향 관계 : Member
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id") // fk 이름
     private Member member;
     // 주문 상품
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
     // 배송
-    @OneToOne
+    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
     // 주문 시간
@@ -36,4 +38,20 @@ public class Order {
     // 주문 상태 (order, cancel)
     @Enumerated(EnumType.STRING)  // Value가 String로 들어감
     private OrderStatus status;
+
+    //==연관관계 메서드==//
+    public void setMember(Member member) {
+        this.member = member;
+        member.getOrders().add(this);
+    }
+
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+        delivery.setOrder(this);
+    }
 }
