@@ -24,6 +24,11 @@ public class MemberRepository {
 
     public void save(Member member) {
         em.persist(member);
+        /*
+        기본적으로는 persist만으로는 DB에 insert 되지 않는다.
+        DB transaction이 commit될 때, refresh와 함께 insert 된다.
+        (DB마다 다르긴 함)
+        */
     }
 
     public Member findOne(Long id) {
