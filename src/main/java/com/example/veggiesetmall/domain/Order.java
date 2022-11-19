@@ -1,6 +1,8 @@
 package com.example.veggiesetmall.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -12,13 +14,12 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Table(name = "orders")
-@Getter
-@Setter
+@Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
 
     // 기본키
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @Column(name = "order_id")
     private Long id;
 
@@ -38,6 +39,8 @@ public class Order {
     // 주문 상태 (order, cancel)
     @Enumerated(EnumType.STRING)  // Value가 String로 들어감
     private OrderStatus status;
+
+//  protected Order() { }
 
     //==연관관계 메서드==//
     public void setMember(Member member) {
