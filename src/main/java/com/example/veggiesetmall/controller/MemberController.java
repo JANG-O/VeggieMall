@@ -28,7 +28,7 @@ public class MemberController {
         if(result.hasErrors()) {
             return "members/createMemberForm";
         }
-        
+
         Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
 
         Member member = new Member();
@@ -38,5 +38,11 @@ public class MemberController {
         memberService.join(member);
         return "redirect:/";  // 첫번째 페이지로 넘어감
 
+    }
+
+    @GetMapping("/members")
+    public String list(Model model) {
+        model.addAttribute("members", memberService.findMembers());
+        return "members/memberList";
     }
 }
