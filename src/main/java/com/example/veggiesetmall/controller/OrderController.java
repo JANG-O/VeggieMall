@@ -1,16 +1,16 @@
 package com.example.veggiesetmall.controller;
 
 import com.example.veggiesetmall.domain.Member;
+import com.example.veggiesetmall.domain.Order;
 import com.example.veggiesetmall.domain.item.Item;
+import com.example.veggiesetmall.repository.OrderSearch;
 import com.example.veggiesetmall.service.ItemService;
 import com.example.veggiesetmall.service.MemberService;
 import com.example.veggiesetmall.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,12 +38,24 @@ public class OrderController {
     public String order(@RequestParam("memberId") Long memberId,  // memberId는 front html의 name 속성값
                         @RequestParam("itemId") Long itemId,
                         @RequestParam("count") int count) {
-        
+
         orderService.order(memberId, itemId, count);
         return "redirect:/orders";
 
     }
 
+    @GetMapping(value = "/orders")
+    public String orderList(@ModelAttribute("orderSearch") OrderSearch orderSearch, Model model) {
+        List<Order> orders = orderService.findOrders(orderSearch);
+        model.addAttribute("orders", orders);
+        return "order/orderList";
+    }
+
+    @PostMapping("/orders/{orderId}/cancel")
+    public String cancelOrder(@PathVariable("orderId") Long orderId) {
+        orderService.cancelOrder(orderId);
+        return "redirect:orders";
+    }
 
 
 
