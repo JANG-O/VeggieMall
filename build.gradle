@@ -12,6 +12,7 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+//  all*.exclude group: 'log4j', module: 'log4j'
 }
 
 repositories {
@@ -44,9 +45,9 @@ dependencies {
 
 }
 
-test {
-	useJunitPlatform()
-}
+//test {
+//	useJunitPlatform()
+//}
 
 tasks.named('test') {
 	useJUnitPlatform()

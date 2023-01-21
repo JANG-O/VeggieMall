@@ -34,8 +34,8 @@ public class OrderController {
         return "order/orderForm";
     }
 
-    @PostMapping("/order")
-    public String order(@RequestParam("memberId") Long memberId,  // memberId는 front html의 name 속성값
+    @PostMapping("/order")  // localhost:8080/order?memberId={memberId}&itemId={itemId}...
+    public String order(@RequestParam("memberId") Long memberId,  // memberId는 front html의 name 속성값(orderForm.html에 전송방식이 POST여야만 @RequestParam 사용 가능
                         @RequestParam("itemId") Long itemId,
                         @RequestParam("count") int count) {
 
