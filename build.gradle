@@ -12,6 +12,7 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+//  all*.exclude group: 'log4j', module: 'log4j'
 }
 
 repositories {
@@ -20,7 +21,15 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-devtools'
+
+	// junit4 --> 이 프로젝트에서는 junit5 쓰고 있긴 함
+    testImplementation("org.junit.vintage:junit-vintage-engine") {
+		exclude group: "org.hamcrest", module: "hamcrest-core"
+	}
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'
@@ -29,7 +38,16 @@ dependencies {
 
 	// log
 	implementation group: 'com.github.gavlyukovskiy', name: 'p6spy-spring-boot-starter', version: '1.7.1'
+
+	// @NotEmpty 사용을 위한 import javax.validation 사용 (spring boot ver2.3 이상 시)
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.4'
+
+
 }
+
+//test {
+//	useJunitPlatform()
+//}
 
 tasks.named('test') {
 	useJUnitPlatform()
